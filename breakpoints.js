@@ -29,7 +29,6 @@
         diff;
 
     for (point in options.breakpoints.sort(function(a,b) { return (b-a) })) {
-
       var breakpoint    = options.breakpoints[point],
           breakpointpre = options.breakpoints[point-1],
           bpclass       = prefix + breakpoint,
@@ -64,12 +63,12 @@
     if (lastwidth != currentwidth) {
       lastwidth = currentwidth;
     }
-  }
+  };
 
   $.fn.applybreakpoints = function() {
     $(window).resize(updatebreakpoints);
     updatebreakpoints();
-  }
+  };
 
   $.fn.setbreakpoints = function(settings) {
     options = $.extend({
