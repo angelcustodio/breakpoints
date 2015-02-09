@@ -16,16 +16,12 @@
 */
 (function($) {
 
-  var lastSize = 0;
+  var lastSize = 0,
+      options;
 
-  $.fn.setBreakpoints = function(settings) {
-    var options = $.extend({
-              distinct: true,
-              breakpoints: new Array(320,480,768,1024)
-              },settings);
-
-    var w = $(window).width();
-    var done = false;
+  var updatebreakpoints = function() {
+    var w = $(window).width(),
+        done = false;
 
     for (var bp in options.breakpoints.sort(function(a,b) { return (b-a) })) {
 
@@ -72,6 +68,19 @@
     if (lastSize != w) {
       lastSize = w;
     }
-  }
+  };
+
+  $.fn.applybreakpoints = function() {
+    $(window).resize(updatebreakpoints);
+    updatebreakpoints();
+  };
+
+  $.fn.setbreakpoints = function(settings) {
+    options = $.extend({
+                distinct: true,
+                breakpoints: new Array(320,480,768,1024)
+    }, settings);
+    this.applybreakpoints();
+  };
 
 })($);
