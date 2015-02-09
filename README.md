@@ -11,7 +11,7 @@ Instead of having an interval checking for browser size changes, this fork uses 
 Additionally, you can configure which is the prefix for the breakpoint class and also where it will be added in the DOM by selecting a target.
 
 ## Instructions
-
+```javascript
   $(window).setbreakpoints({
     // Only the largest breakpoint will be added if true
     // All the breakpoints classes will be added if false
@@ -21,7 +21,7 @@ Additionally, you can configure which is the prefix for the breakpoint class and
     prefix: 'breakpoints',
     // The DOM element where the formed class will be added
     target: 'body,'
-  // Array of widths in pixels where breakpoints should be triggered
+    // Array of widths in pixels where breakpoints should be triggered
     breakpoints: [
       // Add '1' if you want to have a breakpoint class even with a lower size than the minor breakpoint
       1
@@ -31,3 +31,4 @@ Additionally, you can configure which is the prefix for the breakpoint class and
       1024
     ]
   });
+```
