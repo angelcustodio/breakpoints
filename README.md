@@ -23,7 +23,6 @@ Additionally, you can configure which is the prefix for the breakpoint class and
     target: 'body,'
     // Array of widths in pixels where breakpoints should be triggered
     breakpoints: [
-      // Add '1' if you want to have a breakpoint class even with a lower size than the minor breakpoint
       1
       320,
       480,
@@ -32,3 +31,5 @@ Additionally, you can configure which is the prefix for the breakpoint class and
     ]
   });
 ```
+
+Note: The '1' breakpoint is added as an example for a reason. If you want to have always a 'breakpoint-N' class in your selected DOM element (body as default) you'll need to add it so the first size detection will always respond correctly with the class addition because there's no way to have a < 1px wide browser.

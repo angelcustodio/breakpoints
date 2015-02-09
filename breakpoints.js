@@ -1,17 +1,20 @@
 /*
   Breakpoints.js
-  version 1.0
+  version 2.0
 
   Creates handy events for your responsive design breakpoints
 
-  Copyright 2011 XOXCO, Inc
-  http://xoxco.com/
+  Created by XOXCO
+  https://github.com/xoxco
+
+  Forked by Angel Custodio
+  https://github.com/angelcustodio
 
   Documentation for this plugin lives here:
-  http://xoxco.com/projects/code/breakpoints
+  https://github.com/angelcustodio/breakpoints
 
   Licensed under the MIT license:
-  http://www.opensource.org/licenses/mit-license.php
+  http://opensource.org/licenses/MIT
 
 */
 (function($) {
