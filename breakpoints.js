@@ -19,14 +19,6 @@
   var lastSize = 0;
   var interval = null;
 
-  $.fn.resetBreakpoints = function() {
-    $(window).unbind('resize');
-    if (interval) {
-      clearInterval(interval);
-    }
-    lastSize = 0;
-  };
-
   $.fn.setBreakpoints = function(settings) {
     var options = jQuery.extend({
               distinct: true,
