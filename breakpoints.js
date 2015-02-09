@@ -15,69 +15,67 @@
 
 */
 (function($) {
-
-  var lastSize = 0,
+  var lastwidth = 0,
       options;
 
   var updatebreakpoints = function() {
-    var w = $(window).width(),
-        done = false;
+    var $window       = $(window),
+        currentwidth  = $window.width(),
+        done          = false,
+        onlylargest   = options.distinct,
+        prefix        = options.prefix + '-',
+        target        = $(options.target),
+        point,
+        diff;
 
-    for (var bp in options.breakpoints.sort(function(a,b) { return (b-a) })) {
+    for (point in options.breakpoints.sort(function(a,b) { return (b-a) })) {
 
-      // fire onEnter when a browser expands into a new breakpoint
-      // if in distinct mode, remove all other breakpoints first.
-      if (!done && w >= options.breakpoints[bp] && lastSize < options.breakpoints[bp]) {
-        if (options.distinct) {
-          for (var x in options.breakpoints.sort(function(a,b) { return (b-a) })) {
-            if ($('body').hasClass('breakpoint-' + options.breakpoints[x])) {
-              $('body').removeClass('breakpoint-' + options.breakpoints[x]);
-              $(window).trigger('exitBreakpoint' + options.breakpoints[x]);
+      var breakpoint    = options.breakpoints[point],
+          breakpointpre = options.breakpoints[point-1],
+          bpclass       = prefix + breakpoint,
+          newbp         = currentwidth >= breakpoint && lastwidth < breakpoint && !done,
+          exitbp        = currentwidth < breakpoint && lastwidth >= breakpoint,
+          enterbp       = onlylargest && currentwidth >= breakpoint &&
+                          currentwidth < breakpointpre &&
+                          lastwidth > currentwidth && lastwidth > 0 &&
+                          !target.hasClass(bpclass);
+
+      if (newbp) {
+        if (onlylargest) {
+          for (diff in options.breakpoints.sort(function(a,b) { return (b-a) })) {
+            if (target.hasClass(prefix + options.breakpoints[diff])) {
+              target.removeClass(prefix + options.breakpoints[diff]);
             }
           }
           done = true;
         }
-        $('body').addClass('breakpoint-' + options.breakpoints[bp]);
-        $(window).trigger('enterBreakpoint' + options.breakpoints[bp]);
-
+        target.addClass(bpclass);
       }
 
-      // fire onExit when browser contracts out of a larger breakpoint
-      if (w < options.breakpoints[bp] && lastSize >= options.breakpoints[bp]) {
-        $('body').removeClass('breakpoint-' + options.breakpoints[bp]);
-        $(window).trigger('exitBreakpoint' + options.breakpoints[bp]);
-
+      if (exitbp) {
+        target.removeClass(bpclass);
       }
 
-      // if in distinct mode, fire onEnter when browser contracts into a smaller breakpoint
-      if (
-        options.distinct && // only one breakpoint at a time
-        w >= options.breakpoints[bp] && // and we are in this one
-        w < options.breakpoints[bp-1] && // and smaller than the bigger one
-        lastSize > w && // and we contracted
-        lastSize >0 &&  // and this is not the first time
-        !$('body').hasClass('breakpoint-' + options.breakpoints[bp]) // and we aren't already in this breakpoint
-        ) {
-        $('body').addClass('breakpoint-' + options.breakpoints[bp]);
-        $(window).trigger('enterBreakpoint' + options.breakpoints[bp]);
-
+      if (enterbp) {
+        target.addClass(bpclass);
       }
     }
 
-    // set up for next call
-    if (lastSize != w) {
-      lastSize = w;
+    if (lastwidth != currentwidth) {
+      lastwidth = currentwidth;
     }
-  };
+  }
 
   $.fn.applybreakpoints = function() {
     $(window).resize(updatebreakpoints);
     updatebreakpoints();
-  };
+  }
 
   $.fn.setbreakpoints = function(settings) {
     options = $.extend({
                 distinct: true,
+                prefix: 'breakpoints',
+                target: 'body',
                 breakpoints: new Array(320,480,768,1024)
     }, settings);
     this.applybreakpoints();
